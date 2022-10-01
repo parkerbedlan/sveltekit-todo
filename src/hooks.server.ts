@@ -1,6 +1,6 @@
-// src/hooks.server.ts or src/hooks.ts on older SvelteKit versions
-import type { Handle } from '@sveltejs/kit';
+// src/hooks.server.ts
 import { createContext, responseMeta, trpcRouter } from '$lib/server/trpc';
+import type { Handle } from '@sveltejs/kit';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -8,7 +8,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		url: '/trpc', // optional; defaults to '/trpc'
 		router: trpcRouter,
 		createContext, // optional
-		responseMeta, // optional
+		responseMeta,
 		event,
 		resolve
 	});

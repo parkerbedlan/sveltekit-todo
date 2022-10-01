@@ -1,16 +1,15 @@
 <script lang="ts">
 	import type { InferQueryOutput } from '$lib/client/trpcClient';
 	import NewTaskForm from './NewTaskForm.svelte';
-	import type { UpdateTaskEvent } from './Task.svelte';
 	import Task from './Task.svelte';
 
 	export let data: { tasks: InferQueryOutput<'task:getAll'> };
-	let { tasks } = data;
-	$: reversedTasks = [...tasks].reverse();
+	let tasks = data.tasks.reverse();
 
 	const handleNewTask = (event: any) => {
 		const { newTask } = event.detail;
-		tasks = [...tasks, newTask];
+		tasks = [newTask, ...tasks];
+		// tasks = [...tasks, newTask];
 	};
 
 	let showCompleted = true;
@@ -34,13 +33,14 @@
 				<img src="/sad.webp" alt="sad" width="50%" />
 			</div>
 		{/if}
-		{#each reversedTasks as task (task.id)}
+		{#each tasks as task (`${task.id}+${task.done}`)}
 			{#if showCompleted || !task.done}
 				<Task
 					{task}
 					on:updateTask={(event) => {
 						const { updatedTask } = event.detail;
 						task = updatedTask;
+						tasks = tasks;
 					}}
 				/>
 			{/if}
