@@ -12,10 +12,10 @@
 
 	export let task: Task;
 
-	const handleUpdate = async ({ id, done, name }: { id: number } & Partial<Task>) => {
+	const handleUpdate = async ({ id, completed, name }: { id: number } & Partial<Task>) => {
 		const updatedTask = await trpc().mutation('task:update', {
 			id,
-			done,
+			completed,
 			name
 		});
 		dispatch('updateTask', { updatedTask } as UpdateTaskEventDetail);
@@ -27,11 +27,13 @@
 		<input
 			type="checkbox"
 			class="checkbox checkbox-lg"
-			checked={task.done}
+			checked={task.completed}
 			on:change={async ({ currentTarget: { checked } }) => {
-				handleUpdate({ id: task.id, done: checked });
+				handleUpdate({ id: task.id, completed: checked });
 			}}
 		/>
-		<span class={clsx('select-none', task.done && 'line-through text-gray-500')}>{task.name}</span>
+		<span class={clsx('select-none', task.completed && 'line-through text-gray-500')}
+			>{task.name}</span
+		>
 	</label>
 </div>

@@ -15,8 +15,12 @@ export const taskRouter = router()
 		}
 	})
 	.mutation('update', {
-		input: z.object({ id: z.number(), done: z.boolean().optional(), name: z.string().optional() }),
-		resolve: async ({ input: { id, done, name } }) => {
-			return prisma.task.update({ where: { id }, data: { done, name } });
+		input: z.object({
+			id: z.number(),
+			completed: z.boolean().optional(),
+			name: z.string().optional()
+		}),
+		resolve: async ({ input: { id, completed, name } }) => {
+			return prisma.task.update({ where: { id }, data: { completed, name } });
 		}
 	});

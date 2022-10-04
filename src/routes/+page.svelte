@@ -13,7 +13,7 @@
 
 	let showCompleted = true;
 
-	$: noTasks = tasks.length === 0 || (!showCompleted && tasks.every((task) => task.done));
+	$: noTasks = tasks.length === 0 || (!showCompleted && tasks.every((task) => task.completed));
 </script>
 
 <svelte:head>
@@ -28,8 +28,8 @@
 		</label>
 	</div>
 	<div class="overflow-y-auto max-h-96 border p-2 my-2 flex flex-col-reverse">
-		{#each tasks as task (`${task.id}+${task.done}`)}
-			{#if showCompleted || !task.done}
+		{#each tasks as task (`${task.id}+${task.completed}`)}
+			{#if showCompleted || !task.completed}
 				<Task
 					{task}
 					on:updateTask={(event) => {
