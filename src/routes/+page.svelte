@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { InferQueryOutput } from '$lib/client/trpcClient';
+	import { showCompleted } from '$lib/stores/showCompleted';
 	import NewTaskForm from './NewTaskForm.svelte';
 	import Task from './Task.svelte';
 
@@ -11,9 +12,7 @@
 		tasks = [newTask, ...tasks];
 	};
 
-	let showCompleted = true;
-
-	$: noTasks = tasks.length === 0 || (!showCompleted && tasks.every((task) => task.completed));
+	$: noTasks = tasks.length === 0 || (!$showCompleted && tasks.every((task) => task.completed));
 </script>
 
 <svelte:head>
@@ -24,12 +23,12 @@
 	<div class="form-control">
 		<label class="label cursor-pointer">
 			<span class="label-text m-1">Show completed</span>
-			<input type="checkbox" class="toggle toggle-primary" bind:checked={showCompleted} />
+			<input type="checkbox" class="toggle toggle-primary" bind:checked={$showCompleted} />
 		</label>
 	</div>
 	<div class="overflow-y-auto max-h-96 border p-2 my-2 flex flex-col-reverse">
 		{#each tasks as task (`${task.id}+${task.completed}`)}
-			{#if showCompleted || !task.completed}
+			{#if $showCompleted || !task.completed}
 				<Task
 					{task}
 					on:updateTask={(event) => {
