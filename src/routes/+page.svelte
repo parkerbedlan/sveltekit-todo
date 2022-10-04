@@ -9,10 +9,11 @@
 	const handleNewTask = (event: any) => {
 		const { newTask } = event.detail;
 		tasks = [newTask, ...tasks];
-		// tasks = [...tasks, newTask];
 	};
 
 	let showCompleted = true;
+
+	$: noTasks = tasks.length === 0 || (!showCompleted && tasks.every((task) => task.done));
 </script>
 
 <svelte:head>
@@ -27,12 +28,6 @@
 		</label>
 	</div>
 	<div class="overflow-y-auto max-h-96 border p-2 my-2 flex flex-col-reverse">
-		{#if tasks.length === 0}
-			<div class="flex flex-col items-center">
-				<h1>No tasks? :(</h1>
-				<img src="/sad.webp" alt="sad" width="50%" />
-			</div>
-		{/if}
 		{#each tasks as task (`${task.id}+${task.done}`)}
 			{#if showCompleted || !task.done}
 				<Task
@@ -45,6 +40,12 @@
 				/>
 			{/if}
 		{/each}
+		{#if noTasks}
+			<div class="flex flex-col items-center">
+				<h1>No tasks? :(</h1>
+				<img src="/sad.webp" alt="sad" width="50%" />
+			</div>
+		{/if}
 	</div>
 	<NewTaskForm on:newTask={handleNewTask} />
 </section>
