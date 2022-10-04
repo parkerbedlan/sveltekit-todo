@@ -11,7 +11,7 @@ export const createContext = () => {
 	};
 };
 
-// optional
+//  optional
 export const responseMeta: ResponseMetaFn<Router> = ({ type, errors }) => {
 	if (type === 'query' && errors.length === 0) {
 		const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
